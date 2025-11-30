@@ -1,0 +1,64 @@
+body {
+    font-family: Arial;
+    background: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 15px;
+}
+
+.box {
+    width: 350px;
+    background: white;
+    padding: 20px;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px gray;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    background: #0078ff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005fcc;
+}
+
+.menu-box button {
+    width: 250px;
+    margin: 10px auto;
+    display: block;
+}
+
+.stats-box {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.back-btn {
+    margin-top: 20px;
+    background: #444;
+}
+.workout-card {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f7f7f7;
+    border-radius: 6px;
+}
+
