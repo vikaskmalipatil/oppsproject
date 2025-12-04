@@ -1,50 +1,57 @@
 #pragma once
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <string>
-#include <functional>
 #include <iostream>
+#include <string>
 
 #pragma comment(lib, "ws2_32.lib")
 
 class SimpleServer {
 public:
-    void start(int port, std::function<std::string(std::string, std::string)> handler) {
-        WSADATA data;
-        WSAStartup(MAKEWORD(2,2), &data);
+    void start(int port, std::string (*handler)(std::string, std::string)) {
+        WSADATA wsa;
+        WSAStartup(MAKEWORD(2, 2), &wsa);
 
-        SOCKET server = socket(AF_INET, SOCK_STREAM, 0);
+        SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (serverSocket == INVALID_SOCKET) {
+            std::cerr << "Socket creation failed\n";
+            return;
+        }
 
-        sockaddr_in addr{};
-        addr.sin_family = AF_INET;
-        addr.sin_addr.s_addr = INADDR_ANY;
-        addr.sin_port = htons(port);
+        sockaddr_in serverAddr{};
+        serverAddr.sin_family = AF_INET;
+        serverAddr.sin_addr.s_addr = INADDR_ANY;
+        serverAddr.sin_port = htons(port);
 
-        bind(server, (sockaddr*)&addr, sizeof(addr));
-        listen(server, 5);
+        if (bind(serverSocket, (sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
+            std::cerr << "Bind failed\n";
+            closesocket(serverSocket);
+            WSACleanup();
+            return;
+        }
 
+        listen(serverSocket, 10);
         std::cout << "Server running at http://localhost:" << port << "\n";
 
         while (true) {
-            sockaddr_in client{};
-            int size = sizeof(client);
-
-            SOCKET sock = accept(server, (sockaddr*)&client, &size);
-            if (sock == INVALID_SOCKET) continue;
+            SOCKET clientSocket = accept(serverSocket, nullptr, nullptr);
+            if (clientSocket == INVALID_SOCKET) continue;
 
             char buffer[8192];
-            int len = recv(sock, buffer, sizeof(buffer)-1, 0);
-            if (len <= 0) { closesocket(sock); continue; }
-            buffer[len] = 0;
-            std::string req = buffer;
+            int received = recv(clientSocket, buffer, sizeof(buffer), 0);
+            if (received <= 0) {
+                closesocket(clientSocket);
+                continue;
+            }
 
-            std::string resp = handler(req, std::to_string(port));
+            std::string request(buffer, received);
+            std::string response = handler(request, std::to_string(port));
 
-            send(sock, resp.c_str(), (int)resp.size(), 0);
-            closesocket(sock);
+            send(clientSocket, response.c_str(), (int)response.size(), 0);
+            closesocket(clientSocket);
         }
 
-        closesocket(server);
+        closesocket(serverSocket);
         WSACleanup();
     }
 };

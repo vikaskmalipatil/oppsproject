@@ -9,10 +9,25 @@ public:
     int age;
     float height;
     float weight;
+
     std::vector<Workout> workouts;
 
-    Person(std::string n = "", int a = 0, float h = 0.0f, float w = 0.0f);
-    float getBMI() const;
-    float calculateBMI() const;
-    std::string getBMICategory() const;
+    Person(std::string n, int a, float h, float w)
+        : name(n), age(a), height(h), weight(w) {}
+
+    float calculateBMI() const {
+        float hMeters = height / 100.0f;
+        return weight / (hMeters * hMeters);
+    }
+
+    std::string getBMICategory() const {
+        float bmi = calculateBMI();
+        if (bmi < 18.5) return "Underweight";
+        if (bmi < 25) return "Normal";
+        if (bmi < 30) return "Overweight";
+        return "Obese";
+    }
+
+    // This MUST exist because main.cpp calls it
+    std::string getRecommendations() const;
 };

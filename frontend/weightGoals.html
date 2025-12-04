@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weight Goal Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3f8;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .input-box {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: #0277bd;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #015a8e;
+        }
+
+        .card {
+            width: 420px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: left;
+            box-shadow: 0px 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .label {
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .good {
+            padding: 12px;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            margin-top: 12px;
+        }
+
+        .warning {
+            padding: 12px;
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            margin-top: 12px;
+        }
+
+        .tip {
+            padding: 12px;
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            margin-top: 12px;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>⚖ Weight Goal Calculator</h1>
+
+<div class="input-box">
+    <input id="username" placeholder="Enter your name">
+    <button onclick="loadGoals()">Check Weight Goals</button>
+</div>
+
+<div id="goalCard" class="card" style="display:none;">
+    <h2 id="userName"></h2>
+
+    <p class="label">BMI:</p>
+    <p id="bmi"></p>
+
+    <p class="label">Category:</p>
+    <p id="category"></p>
+
+    <p class="label">Weight to Gain:</p>
+    <p id="gain"></p>
+
+    <p class="label">Weight to Lose:</p>
+    <p id="lose"></p>
+
+    <div id="message"></div>
+</div>
+
+<button class="back-btn" onclick="location.href='index.html'">⬅ Back</button>
+
+<script>
+async function loadGoals() {
+    const name = document.getElementById("username").value.trim();
+
+    if (!name) {
+        alert("Enter a name first!");
+        return;
+    }
+
+    const response = await fetch(`http://localhost:8080/api/recommend?name=${name}`);
+    const txt = await response.text();
+
+    let data;
+    try {
+        data = JSON.parse(txt);
+    } catch {
+        alert("Invalid server response.");
+        return;
+    }
+
+    document.getElementById("goalCard").style.display = "block";
+
+    document.getElementById("userName").innerText = data.name;
+    document.getElementById("bmi").innerText = data.bmi.toFixed(2);
+    document.getElementById("category").innerText = data.category;
+
+    document.getElementById("gain").innerText =
+        data.weightToGain ? (data.weightToGain.toFixed(1) + " kg") : "0 kg";
+
+    document.getElementById("lose").innerText =
+        data.weightToLose ? (data.weightToLose.toFixed(1) + " kg") : "0 kg";
+
+    // Message Box
+    let msg = "";
+    if (data.weightToGain > 0) {
+        msg = `<div class="warning">🚨 You need to GAIN about <b>${data.weightToGain.toFixed(1)} kg</b> to reach a healthy BMI.</div>`;
+    }
+    else if (data.weightToLose > 0) {
+        msg = `<div class="warning">⚠ You need to LOSE about <b>${data.weightToLose.toFixed(1)} kg</b> to reach a healthy BMI.</div>`;
+    }
+    else {
+        msg = `<div class="good">✅ Your weight is perfect for your height! Maintain it with regular exercise.</div>`;
+    }
+
+    document.getElementById("message").innerHTML = msg;
+}
+</script>
+
+</body>
+</html>
+

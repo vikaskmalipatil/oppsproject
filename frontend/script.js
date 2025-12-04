@@ -1,5 +1,6 @@
 const API = "http://localhost:8080/api";
 
+// ---------------------- ADD USER ----------------------
 async function addUser() {
     let data = {
         name: document.getElementById("addName").value,
@@ -18,7 +19,7 @@ async function addUser() {
     document.getElementById("addUserResult").innerText = json.message || json.error;
 }
 
-
+// ---------------------- ADD WORKOUT ----------------------
 async function addWorkout() {
     let data = {
         name: document.getElementById("workoutName").value,
@@ -36,29 +37,27 @@ async function addWorkout() {
     document.getElementById("addWorkoutResult").innerText = json.message || json.error;
 }
 
-
+// ---------------------- GET STATS ----------------------
 async function getStats() {
     let name = document.getElementById("statsName").value;
-
-    if (!name) {
-        document.getElementById("statsBox").innerHTML = `<p class="error">Please enter a username.</p>`;
-        return;
-    }
 
     let res = await fetch(API + "/stats?name=" + name);
     let json = await res.json();
 
-    let box = document.getElementById("statsBox");
-
     if (json.error) {
-        box.innerHTML = `<p class="error">${json.error}</p>`;
+        document.getElementById("statsBox").innerHTML = json.error;
         return;
     }
 
-    // Display workouts
-    let workoutsHTML = "";
+    let html = `
+        <h3>${json.name}</h3>
+        <p><strong>BMI:</strong> ${json.bmi}</p>
+        <p><strong>Category:</strong> ${json.category}</p>
+        <h3>Workouts</h3>
+    `;
+
     json.workouts.forEach((w, i) => {
-        workoutsHTML += `
+        html += `
             <div class="workout-card">
                 <p><strong>${i + 1}. ${w.type}</strong></p>
                 <p>Duration: ${w.duration} min</p>
@@ -68,13 +67,14 @@ async function getStats() {
         `;
     });
 
-    box.innerHTML = `
-        <h3>${json.name}</h3>
-        <p><strong>BMI:</strong> ${json.bmi.toFixed(2)}</p>
-        <p><strong>Category:</strong> ${json.category}</p>
-        <p><strong>Total Workouts:</strong> ${json.totalWorkouts}</p>
+    document.getElementById("statsBox").innerHTML = html;
+}
 
-        <h3>Workouts</h3>
-        ${workoutsHTML}
-    `;
+// ---------------------- GET RECOMMENDATIONS ----------------------
+function getRecommendations() {
+    const name = document.getElementById("r_name").value;
+
+    fetch(`${API}/recommend?name=${name}`)
+        .then(r => r.text())
+        .then(t => document.getElementById("recOut").innerText = t);
 }

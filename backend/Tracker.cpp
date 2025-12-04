@@ -5,9 +5,9 @@ void Tracker::addUser(const Person& p) {
 }
 
 Person* Tracker::getUser(const std::string& name) {
-    for (auto &u : users) {
-        if (u.name == name) return &u;
+    for (auto& u : users) {
+        if (u.name == name)
+            return &u;
     }
     return nullptr;
 }
-    

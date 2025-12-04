@@ -4,9 +4,11 @@
 class Workout {
 public:
     std::string type;
-    int duration;
+    int duration;  // minutes
     int calories;
 
-    Workout(std::string t = "", int d = 0, int c = 0);
+    Workout();
+    Workout(const std::string& t, int d, int c);
+
     int estimateCalories() const;
 };
