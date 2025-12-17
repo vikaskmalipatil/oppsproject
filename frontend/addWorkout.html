@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Add Workout</title>
@@ -17,6 +17,143 @@
 </div>
 
 <button class="back-btn" onclick="location.href='index.html'">⬅ Back</button>
+
+<script src="script.js"></script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Workout</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Blur + Dark Overlay */
+        .blur-bg {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.55);
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Title Glow */
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 45px;
+            font-weight: 600;
+            text-shadow: 0 0 10px #ff3300, 0 0 20px black;
+            letter-spacing: 2px;
+        }
+
+        /* Frosted Glass Box */
+        .box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 18px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            backdrop-filter: blur(15px);
+        }
+
+        /* Inputs shine + hover glow */
+        .box input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            transition: 0.25s;
+        }
+
+        .box input:focus {
+            background: rgba(255,255,255,0.35);
+            box-shadow: 0 0 15px #ff5722;
+        }
+
+        /* Neon Button */
+        .box button {
+            width: 95%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff3d00, #ff9100);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 18px #ff3d00;
+        }
+
+        .box button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #ff9100;
+        }
+
+        /* Output text */
+        #addWorkoutResult {
+            color: #fff;
+            margin-top: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 10px black;
+        }
+
+        /* Back Button */
+        .back-btn {
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 12px 18px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px black;
+        }
+
+        .back-btn:hover {
+            background: rgba(0,0,0,0.9);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="blur-bg">
+    <h1>ADD WORKOUT</h1>
+
+    <div class="box">
+        <input id="workoutName" placeholder="User Name">
+        <input id="workoutType" placeholder="Workout Type">
+        <input id="workoutDuration" type="number" placeholder="Duration (min)">
+        <button onclick="addWorkout()">Add Workout</button>
+        <p id="addWorkoutResult"></p>
+    </div>
+
+    <button class="back-btn" onclick="location.href='index.html'">⬅ Back</button>
+</div>
 
 <script src="script.js"></script>
 

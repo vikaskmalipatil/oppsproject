@@ -2,21 +2,215 @@
 <html>
 <head>
     <title>User Stats</title>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        h1 {
+            position: relative;
+            z-index: 2;
+            margin-top: 40px;
+            text-align: center;
+            color: white;
+            font-size: 45px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px #ffcc66, 0 0 25px black;
+        }
+
+        .box {
+            width: 440px;
+            padding: 25px;
+            margin: auto;
+            margin-top: 30px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 18px;
+            backdrop-filter: blur(8px);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        .box input {
+            width: 90%;
+            padding: 12px;
+            font-size: 17px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        .box button {
+            width: 90%;
+            padding: 14px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff7b00, #ffbb33);
+            color: white;
+        }
+
+        .stats-box {
+            padding: 18px;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.45);
+            color: #ffe7bf;
+            border-radius: 12px;
+            font-size: 16px;
+            display: none;
+        }
+
+        canvas {
+            margin-top: 20px;
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            width: 160px;
+            padding: 12px;
+            color: white;
+            background: #222;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>User Stats</h1>
+<div class="overlay"></div>
+
+<h1>📊 User Fitness Stats</h1>
 
 <div class="box">
-    <input id="statsName" placeholder="User Name">
+    <input id="statsName" placeholder="Enter User Name">
     <button onclick="getStats()">Get Stats</button>
+
     <div id="statsBox" class="stats-box"></div>
+
+    <canvas id="statsChart"></canvas>
 </div>
 
 <button class="back-btn" onclick="location.href='index.html'">⬅ Back</button>
 
-<script src="script.js"></script>
+<script>
+let chart = null;
+
+async function getStats() {
+    const name = document.getElementById("statsName").value.trim();
+    if (!name) {
+        alert("Enter a user name");
+        return;
+    }
+
+    const res = await fetch(`http://localhost:8080/api/stats?name=${name}`);
+    const text = await res.text();
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch {
+        alert("Invalid response from server");
+        return;
+    }
+
+    if (data.error) {
+        alert(data.error);
+        return;
+    }
+
+    // ----- Show Text Stats -----
+    let workoutText = "";
+    let labels = [];
+    let calories = [];
+
+    data.workouts.forEach((w, i) => {
+        workoutText += `<p><b>Workout ${i + 1}:</b> ${w.type}, ${w.duration} min, ${w.calories} cal</p>`;
+        labels.push(`Workout ${i + 1}`);
+        calories.push(w.calories);
+    });
+
+    const statsBox = document.getElementById("statsBox");
+    statsBox.style.display = "block";
+    statsBox.innerHTML = `
+        <p><b>Name:</b> ${data.name}</p>
+        <p><b>BMI:</b> ${data.bmi.toFixed(2)}</p>
+        <p><b>Category:</b> ${data.category}</p>
+        <p><b>Total Workouts:</b> ${data.totalWorkouts}</p>
+        <hr>
+        ${workoutText}
+    `;
+
+    // ----- Draw Graph -----
+    const canvas = document.getElementById("statsChart");
+    canvas.style.display = "block";
+    const ctx = canvas.getContext("2d");
+
+    if (chart) chart.destroy();
+
+    chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Calories Burned",
+                data: calories,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Calories"
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Workouts"
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
 
 </body>
 </html>

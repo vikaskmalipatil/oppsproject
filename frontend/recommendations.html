@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Health Recommendations</title>
@@ -140,6 +140,216 @@ async function getRecommendations() {
     document.getElementById("advice").innerHTML = advHTML;
 
     // Food list
+    let foodHTML = "";
+    data.foodSuggestions.forEach(f => foodHTML += `<li>${f}</li>`);
+    document.getElementById("foods").innerHTML = foodHTML;
+}
+</script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Recommendations</title>
+
+    <!-- Premium Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Dark overlay */
+        .overlay {
+            background: rgba(0, 0, 0, 0.70);
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        h1 {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 45px;
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 15px #00e676, 0 0 25px #00c853;
+        }
+
+        /* Input Box */
+        .box {
+            width: 420px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 3;
+            text-align: center;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #00e676, #00c853);
+            border: none;
+            padding: 12px 25px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 0 20px rgba(0,255,100,0.7);
+        }
+
+        button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 30px #00e676;
+        }
+
+        /* Result Card */
+        .card {
+            width: 420px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 3;
+            color: #fff;
+            display: none;
+        }
+
+        .card h2 {
+            font-size: 26px;
+            font-weight: 600;
+            color: #00ff90;
+            text-shadow: 0 0 10px #00ff90;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #fff;
+            margin-top: 12px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        ul li {
+            color: #e0ffe5;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: relative;
+            z-index: 3;
+            margin: 20px auto;
+            display: block;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: #222;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .back-btn:hover {
+            background: #444;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<h1>🍏 Health & Fitness Recommendations</h1>
+
+<div class="box">
+    <input id="r_name" placeholder="Enter User Name">
+    <button onclick="getRecommendations()">Get Recommendations</button>
+</div>
+
+<div id="result" class="card">
+    <h2 id="name"></h2>
+
+    <p class="label">BMI:</p>
+    <p id="bmi"></p>
+
+    <p class="label">Health Category:</p>
+    <p id="category"></p>
+
+    <p class="label">Total Calories Burned:</p>
+    <p id="calories"></p>
+
+    <p class="label">Status:</p>
+    <p id="status"></p>
+
+    <p class="label">Advice:</p>
+    <ul id="advice"></ul>
+
+    <p class="label">Recommended Foods:</p>
+    <ul id="foods"></ul>
+</div>
+
+<button class="back-btn" onclick="location.href='index.html'">⬅ Back</button>
+
+<script>
+async function getRecommendations() {
+    const name = document.getElementById("r_name").value;
+
+    const res = await fetch(`http://localhost:8080/api/recommend?name=${name}`);
+    const text = await res.text();
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch {
+        alert("Invalid server response");
+        return;
+    }
+
+    document.getElementById("result").style.display = "block";
+
+    document.getElementById("name").innerText = data.name;
+    document.getElementById("bmi").innerText = data.bmi;
+    document.getElementById("category").innerText = data.category;
+    document.getElementById("calories").innerText = data.totalCaloriesBurned;
+    document.getElementById("status").innerText = data.status;
+
+    let advHTML = "";
+    data.advice.forEach(a => advHTML += `<li>${a}</li>`);
+    document.getElementById("advice").innerHTML = advHTML;
+
     let foodHTML = "";
     data.foodSuggestions.forEach(f => foodHTML += `<li>${f}</li>`);
     document.getElementById("foods").innerHTML = foodHTML;

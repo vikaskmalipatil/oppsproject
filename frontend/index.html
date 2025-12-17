@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Fitness Tracker</title>
@@ -54,6 +54,144 @@
     <button onclick="location.href='stats.html'">View Stats</button>
     <button onclick="location.href='recommendations.html'">Health Recommendations</button>
     <button onclick="location.href='weightGoals.html'">Weight Goal Calculator</button>
+</div>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fitness Tracker</title>
+
+    <!-- Premium Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg') 
+                        no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Dark overlay */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.70);
+            z-index: 1;
+        }
+
+        /* Glowing floating images */
+        .float-img {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 18px;
+            box-shadow: 0 0 20px rgba(255, 98, 0, 0.75);
+            border: 2px solid rgba(255,255,255,0.3);
+            animation: float 3s infinite ease-in-out alternate;
+            z-index: 0;
+        }
+
+        .img1 { top: 10%; left: 5%; }
+        .img2 { bottom: 12%; right: 5%; animation-delay: 0.8s; }
+        .img3 { top: 55%; left: 12%; width: 150px; height: 150px; animation-delay: 1.5s; }
+
+        @keyframes float {
+            from { transform: translateY(-10px); }
+            to   { transform: translateY(12px); }
+        }
+
+        /* Center Wrapper */
+        .center-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        /* Heading - Neon Glow */
+        h1 {
+            color: #fff;
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow:
+                0 0 10px #ff3d00,
+                0 0 25px #ff6d00,
+                0 0 40px black;
+            margin-bottom: 25px;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff4800; }
+            100% { text-shadow: 0 0 25px #ff9a00; }
+        }
+
+        /* Glass menu box */
+        .menu-box {
+            padding: 35px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.13);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 35px rgba(0,0,0,0.55);
+        }
+
+        /* Premium Glowing Buttons */
+        .menu-box button {
+            width: 95%;
+            padding: 15px;
+            margin: 12px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(45deg, #ff6d00, #ff3d00);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 0 14px rgba(255, 98, 0, 0.9);
+            transition: 0.3s;
+        }
+
+        .menu-box button:hover {
+            transform: scale(1.06);
+            background: linear-gradient(45deg, #ff8c00, #ff5722);
+            box-shadow: 0 0 25px #ff9100;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<!-- Floating Fitness Images -->
+<img src="https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg" class="float-img img1">
+<img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg" class="float-img img2">
+<img src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg" class="float-img img3">
+
+<div class="center-wrapper">
+    <h1>Fitness Tracker</h1>
+
+    <div class="menu-box">
+        <button onclick="location.href='addUser.html'">Add User</button>
+        <button onclick="location.href='addWorkout.html'">Add Workout</button>
+        <button onclick="location.href='stats.html'">View Stats</button>
+        <button onclick="location.href='recommendations.html'">Health Recommendations</button>
+        <button onclick="location.href='weightGoals.html'">Weight Goal Calculator</button>
+    </div>
 </div>
 
 </body>
