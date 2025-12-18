@@ -78,3 +78,9 @@ function getRecommendations() {
         .then(r => r.text())
         .then(t => document.getElementById("recOut").innerText = t);
 }
+
+fetch("components/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar-container").innerHTML = data;
+  });

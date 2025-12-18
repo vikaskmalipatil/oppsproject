@@ -28,6 +28,6 @@ public:
         return "Obese";
     }
 
-    // This MUST exist because main.cpp calls it
+   
     std::string getRecommendations() const;
 };

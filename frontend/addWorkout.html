@@ -26,6 +26,8 @@
 <html>
 <head>
     <title>Add Workout</title>
+    <link rel="stylesheet" href="components/navbar.css">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -137,9 +139,16 @@
             background: rgba(0,0,0,0.9);
             transform: scale(1.05);
         }
+        #navbar-container {
+    position: relative;
+    z-index: 10;
+}
+
     </style>
 </head>
 <body>
+    <div id="navbar-container"></div>
+
 
 <div class="blur-bg">
     <h1>ADD WORKOUT</h1>

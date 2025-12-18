@@ -5,9 +5,15 @@
 
     <!-- Premium Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="components/navbar.css">
 
     <style>
+        .navbar {
+    margin-top: 25px;
+}
+
         body {
+            
             margin: 0;
             font-family: 'Poppins', sans-serif;
             background: url('https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg') no-repeat center center fixed;
@@ -160,11 +166,18 @@
             transform: scale(1.05);
             box-shadow: 0 0 30px white;
         }
+        #navbar-container {
+    position: relative;
+    z-index: 10;
+}
+
 
     </style>
 </head>
 
 <body>
+    <div id="navbar-container"></div>
+
 
 <div class="blur-bg">
 

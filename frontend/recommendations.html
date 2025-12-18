@@ -152,6 +152,7 @@ async function getRecommendations() {
 <html>
 <head>
     <title>Health Recommendations</title>
+    <link rel="stylesheet" href="components/navbar.css">
 
     <!-- Premium Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -285,10 +286,17 @@ async function getRecommendations() {
             background: #444;
             transform: scale(1.05);
         }
+        #navbar-container {
+    position: relative;
+    z-index: 10;
+}
     </style>
 </head>
+<script src="script.js"></script>
 
 <body>
+    <div id="navbar-container"></div>
+
 
 <div class="overlay"></div>
 
